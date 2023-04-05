@@ -4,13 +4,20 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 
-import { type Plugin, type Processor, unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkDirective from "remark-directive";
-import remarkGfm from "remark-gfm";
-import remarkDirectiveRehype from "remark-directive-rehype";
-import remarkRehype from "remark-rehype";
-import { createElement, Fragment, type VNode } from "preact";
+import {
+  createElement,
+  Fragment,
+  type Plugin,
+  type Processor,
+  remarkDirective,
+  remarkDirectiveRehype,
+  remarkGfm,
+  remarkParse,
+  remarkRehype,
+  unified,
+  type VNode,
+} from "./deps.ts";
+
 import {
   type Comment,
   type DocType,

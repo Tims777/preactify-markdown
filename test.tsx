@@ -1,6 +1,6 @@
-import { createElement, type VNode } from "preact";
+import { createElement, type VNode } from "https://esm.sh/preact@10.13.2";
 import { assertEquals } from "https://deno.land/std@0.182.0/testing/asserts.ts";
-import { renderToString } from "https://esm.sh/*preact-render-to-string@5.2.6";
+import { renderToString } from "https://esm.sh/preact-render-to-string@5.2.6";
 import { type Factory, MarkdownPreactifier } from "./mod.ts";
 
 const customElements: Record<string, Factory<VNode>> = {
