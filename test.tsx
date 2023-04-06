@@ -1,15 +1,20 @@
-import { createElement, type VNode } from "https://esm.sh/preact@10.13.2";
-import { assertEquals } from "https://deno.land/std@0.182.0/testing/asserts.ts";
-import { renderToString } from "https://esm.sh/preact-render-to-string@5.2.6";
-import { type Factory, MarkdownPreactifier } from "./mod.ts";
+/// <reference no-default-lib="true" />
+/// <reference lib="deno.ns" />
 
-const customElements: Record<string, Factory<VNode>> = {
-  custom: (props, children) => createElement("div", props, children),
+import MarkdownPreactifier from "./mod.ts";
+import { assertEquals, renderToString } from "./test-deps.ts";
+import { type DirectiveHandler, type JSX } from "./types.d.ts";
+
+const directives: Record<string, DirectiveHandler> = {
+  // custom: ...
 };
 
-async function assertParseResult(markdown: string, html: VNode) {
-  const preactifier = new MarkdownPreactifier(customElements);
-  const actual = renderToString(await preactifier.parse(markdown));
+async function assertParseResult(markdown: string, html: JSX.Element) {
+  const preactifier = new MarkdownPreactifier();
+  const hast = preactifier.parse(markdown);
+  const configured = await preactifier.configure(hast);
+  const jsx = preactifier.preactify(configured);
+  const actual = renderToString(jsx ?? <></>);
   const expected = renderToString(html);
   assertEquals(actual, expected);
 }

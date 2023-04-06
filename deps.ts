@@ -1,15 +1,14 @@
-export {
-  type Plugin,
-  type Processor,
-  unified,
-} from "https://esm.sh/unified@10.1.2";
-export { default as remarkParse } from "https://esm.sh/remark-parse@10.0.1";
-export { default as remarkDirective } from "https://esm.sh/remark-directive@2.0.1";
-export { default as remarkGfm } from "https://esm.sh/remark-gfm@3.0.1";
-export { default as remarkDirectiveRehype } from "https://esm.sh/remark-directive-rehype@0.4.2";
-export { default as remarkRehype } from "https://esm.sh/remark-rehype@10.1.0";
-export {
-  createElement,
-  Fragment,
-  type VNode,
-} from "https://esm.sh/v113/preact@10.13.2";
+export { fromMarkdown } from "https://esm.sh/mdast-util-from-markdown@1.3.0";
+export { toHast } from "https://esm.sh/mdast-util-to-hast@12.2.6";
+export { gfm } from "https://esm.sh/micromark-extension-gfm@2.0.1";
+export { gfmFromMarkdown } from "https://esm.sh/mdast-util-gfm@2.0.2";
+export { directive } from "https://esm.sh/micromark-extension-directive@2.2.0";
+export { directiveFromMarkdown } from "https://esm.sh/mdast-util-directive@2.2.4";
+export { toJsxRuntime } from "https://esm.sh/hast-util-to-jsx-runtime@1.2.0";
+export { Fragment, jsx, jsxs } from "https://esm.sh/preact@10.13.2/jsx-runtime";
+export { map as unistMap } from "https://esm.sh/unist-util-map@3.1.3";
+export { visit as unistVisit } from "https://esm.sh/unist-util-visit@4.1.2";
+export { stringifyPosition } from "https://esm.sh/unist-util-stringify-position@3.0.3";
+export { isDirective, mapDirectives } from "./lib/directives.ts";
+export { parseMarkdown } from "./lib/markdown.ts";
+export { preactify } from "./lib/preactify.ts";
