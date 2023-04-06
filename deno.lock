@@ -18,7 +18,6 @@
     "https://esm.sh/stable/preact@10.13.2/deno/jsx-runtime.js": "dd40c5bdfe7b277bf51009fb950c550dfb554b6d56a1b3a4cb9bc12bde84bcd1",
     "https://esm.sh/stable/preact@10.13.2/deno/preact.mjs": "365fab897381f4f403f859c5d12939084560545567108cc90dae901bbe892578",
     "https://esm.sh/unist-util-map@3.1.3": "0b12a8afde2ea3c33c0dce690580d7e4af378b6f9eebf483e1ce8bf9a4a4e26b",
-    "https://esm.sh/unist-util-stringify-position@3.0.3": "88a58c90f31f37c36a0a0855e584cbc80eda9fbca5b13a25c83259c3670fe87c",
     "https://esm.sh/unist-util-visit@4.1.2": "5521ed53b8c6367ac1d472781f6d9a079d3e4faeb69e1e01d5d12c23668dd528",
     "https://esm.sh/v111/character-entities@2.0.2/deno/character-entities.js": "e12f560609a85d117b707c575355600c1dae09d78cf9a7d725ffc302e170a0b7",
     "https://esm.sh/v111/decode-named-character-reference@1.0.2/deno/decode-named-character-reference.js": "9da312ffdc4f47be2c27daefebe33f22909e7642d15a3b4a6865876ee5fabe23",
@@ -226,8 +225,6 @@
     "https://esm.sh/v114/unist-util-map@3.1.3/lib/index.d.ts": "188348ebaf6ca14923713749f5ed270382cc1c60645162be067162124633a99a",
     "https://esm.sh/v114/unist-util-position@4.0.4/deno/unist-util-position.mjs": "276baf692b5f06e497f5ada09b7d52260bd9636410c171b54dab44f9a2a55688",
     "https://esm.sh/v114/unist-util-stringify-position@3.0.3/deno/unist-util-stringify-position.mjs": "fe173ba47eaa3af5f89a00b2b7a326bb39a14dfeacff071062a876bf41894446",
-    "https://esm.sh/v114/unist-util-stringify-position@3.0.3/index.d.ts": "ece1b55527da50211eccc0fbe0fc3f3e516ae22da6f7da2230024a7f49204935",
-    "https://esm.sh/v114/unist-util-stringify-position@3.0.3/lib/index.d.ts": "2a6e79bbb63147111feb358be7fe9665994e2001671332d84d32a4d3eacc4357",
     "https://esm.sh/v114/unist-util-visit-parents@5.1.3/deno/unist-util-visit-parents.mjs": "eb029051fe6eec6a6f77e64f21cc929f8ac08d718032fde81be556a10991c230",
     "https://esm.sh/v114/unist-util-visit@4.1.2/deno/unist-util-visit.mjs": "a305cd2d66f58f1bccb6106dd23fa19245a0e0d9d3fb71da0f55323bc75d7005",
     "https://esm.sh/v114/vfile-message@3.1.4/deno/vfile-message.mjs": "dbf2c49d4a44d0b709ffa081d771efa6af7ff9cbd2825b7b11493aa83065daed"

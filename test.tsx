@@ -3,14 +3,20 @@
 
 import MarkdownPreactifier from "./mod.ts";
 import { assertEquals, renderToString } from "./test-deps.ts";
-import { type DirectiveHandler, type JSX } from "./types.d.ts";
+import { type ComponentChildren, type DirectiveOptions, type JSX } from "./types.d.ts";
 
-const directives: Record<string, DirectiveHandler> = {
-  // custom: ...
+const CustomDirective = (props: { name?: string; children?: ComponentChildren }) => {
+  return <div name={props.name}>{props.children}</div>
+};
+
+const directives: DirectiveOptions = {
+  custom: {
+    component: CustomDirective,
+  }
 };
 
 async function assertParseResult(markdown: string, html: JSX.Element) {
-  const preactifier = new MarkdownPreactifier();
+  const preactifier = new MarkdownPreactifier(directives);
   const hast = preactifier.parse(markdown);
   const configured = await preactifier.configure(hast);
   const jsx = preactifier.preactify(configured);

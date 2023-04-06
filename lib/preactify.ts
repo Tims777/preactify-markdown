@@ -1,14 +1,31 @@
 import { Fragment, jsx, jsxs, toHast, toJsxRuntime } from "../deps.ts";
-import { type JSX, type JsxOptions, type MdastRoot } from "../types.d.ts";
+import {
+  type DirectiveOptions,
+  type JSX,
+  JsxComponents,
+  type JsxOptions,
+  type MdastRoot,
+} from "../types.d.ts";
 
-export function preactify(mdast: MdastRoot): JSX.Element | null {
+export function preactify(
+  mdast: MdastRoot,
+  directives: DirectiveOptions,
+): JSX.Element | null {
   const hast = toHast(mdast);
+  if (!hast) return null;
+
+  const components: JsxComponents = {};
+  for (const [k, v] of Object.entries(directives)) {
+    components[k] = v.component;
+  }
+
   const options = {
     Fragment,
     jsx,
     jsxs,
-    components: {},
+    components,
     elementAttributeNameCase: "html",
   } as JsxOptions;
-  return hast ? toJsxRuntime(hast, options) : null;
+
+  return toJsxRuntime(hast, options);
 }

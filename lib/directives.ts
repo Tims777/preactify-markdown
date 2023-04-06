@@ -1,6 +1,8 @@
-import { stringifyPosition as keyify, unistMap, unistVisit } from "../deps.ts";
+import { unistMap, unistVisit } from "../deps.ts";
 import {
+  type ComponentConfiguration,
   type Directive,
+  type DirectiveOptions,
   type InclusiveDescendant,
   type UnistNode,
 } from "../types.d.ts";
@@ -11,15 +13,29 @@ enum DirectiveType {
   "containerDirective",
 }
 
+function createConfiguredNode(name: string, config: ComponentConfiguration): UnistNode {
+  return {
+    type: "mappedDirective",
+    data: {
+      hName: name,
+      hProperties: config.props,
+    },
+    // TODO: Children
+  };
+}
+
+function keyify(x: unknown) {
+  // TODO: This is very inefficient
+  return JSON.stringify(x);
+}
+
 export function isDirective(node: { type: string }): node is Directive {
   return node.type in DirectiveType;
 }
 
-type MapFn<X, Y> = (x: X) => Promise<Y> | Y;
-
 export async function mapDirectives<T extends UnistNode>(
   tree: T,
-  mapper: MapFn<Directive, InclusiveDescendant<T>>,
+  handlers: DirectiveOptions,
 ): Promise<T> {
   const directives: Record<string, Directive> = {};
   unistVisit(tree, isDirective, (node: Directive) => {
@@ -29,7 +45,23 @@ export async function mapDirectives<T extends UnistNode>(
 
   const mapped: Record<string, InclusiveDescendant<T>> = {};
   for (const key in directives) {
-    mapped[key] = await mapper(directives[key]);
+    const directive = directives[key];
+    if (directive.name in handlers) {
+      const handler = handlers[directive.name];
+      let config: ComponentConfiguration;
+      if (handler.configure) {
+        config = await handler.configure(directive);
+      } else {
+        config = {
+          children: directive.children,
+          props: directive.attributes ?? {},
+        };
+      }
+      mapped[key] = createConfiguredNode(
+        directive.name,
+        config,
+      ) as InclusiveDescendant<T>;
+    }
   }
 
   return unistMap(tree, (node) => {

@@ -8,7 +8,6 @@ export { toJsxRuntime } from "https://esm.sh/hast-util-to-jsx-runtime@1.2.0";
 export { Fragment, jsx, jsxs } from "https://esm.sh/preact@10.13.2/jsx-runtime";
 export { map as unistMap } from "https://esm.sh/unist-util-map@3.1.3";
 export { visit as unistVisit } from "https://esm.sh/unist-util-visit@4.1.2";
-export { stringifyPosition } from "https://esm.sh/unist-util-stringify-position@3.0.3";
 export { isDirective, mapDirectives } from "./lib/directives.ts";
 export { parseMarkdown } from "./lib/markdown.ts";
 export { preactify } from "./lib/preactify.ts";
