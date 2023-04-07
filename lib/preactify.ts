@@ -1,4 +1,5 @@
-import { Fragment, jsx, jsxs, toHast, toJsxRuntime } from "../deps.ts";
+import { Fragment, jsx, jsxs } from "preact/jsx-runtime";
+import { toHast, toJsxRuntime } from "../deps.ts";
 import {
   type DirectiveOptions,
   type JSX,

@@ -1,4 +1,5 @@
 {
+  "importMap": "./import_map.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "https://esm.sh/preact@10.13.2"
