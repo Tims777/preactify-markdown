@@ -1,18 +1,18 @@
-import { mapDirectives, parseMarkdown, preactify } from "./deps.ts";
-import { type DirectiveOptions, type JSX, type MdastRoot } from "./types.d.ts";
+import { configureAll, parseMarkdown, preactify } from "./deps.ts";
+import { type DirectiveOptions, type JSX, type Mdast } from "./types.d.ts";
 
 export default class MarkdownPreactifier {
   constructor(private directives: DirectiveOptions) {}
 
-  public parse(markdown: string): MdastRoot {
+  public parse(markdown: string): Mdast {
     return parseMarkdown(markdown);
   }
 
-  public async configure(mdast: MdastRoot): Promise<MdastRoot> {
-    return await mapDirectives(mdast, this.directives);
+  public async configure(mdast: Mdast): Promise<void> {
+    await configureAll(mdast, this.directives);
   }
 
-  public preactify(mdast: MdastRoot): JSX.Element | null {
+  public preactify(mdast: Mdast): JSX.Element | null {
     return preactify(mdast, this.directives);
   }
 }

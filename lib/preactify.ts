@@ -4,11 +4,11 @@ import {
   type JSX,
   JsxComponents,
   type JsxOptions,
-  type MdastRoot,
+  type Mdast,
 } from "../types.d.ts";
 
 export function preactify(
-  mdast: MdastRoot,
+  mdast: Mdast,
   directives: DirectiveOptions,
 ): JSX.Element | null {
   const hast = toHast(mdast);
