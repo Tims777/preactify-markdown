@@ -35,10 +35,12 @@ declare module "https://esm.sh/v114/@types/mdast@3.0.11/index.d.ts" {
 
 import { type ComponentType } from "https://esm.sh/v114/preact@10.13.2/src/index.d.ts";
 
-export interface DirectiveHandler {
-  component: ComponentType;
-  configure?: ComponentConfigurator;
+// deno-lint-ignore ban-types no-explicit-any
+export interface DirectiveHandler<P extends {} = any> {
+  component: ComponentType<P>;
+  configure?: ComponentConfigurator<P>;
 }
 
-export type ComponentConfigurator = (directive: Directive) => Promise<void>;
+export type MaybePromise<T> = Promise<T> | T;
+export type ComponentConfigurator<T> = (directive: Directive) => MaybePromise<T | false>;
 export type DirectiveOptions = Record<string, DirectiveHandler>;

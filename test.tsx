@@ -7,21 +7,43 @@ import {
   type JSX,
 } from "./types.d.ts";
 
-const CustomDirective = (
-  props: { name?: string; configured?: string; children?: ComponentChildren },
-) => {
+interface CustomDirectiveProps {
+  value: number | string;
+  configured?: boolean;
+  directiveType?: string;
+  children?: ComponentChildren;
+}
+
+const CustomDirective = (props: CustomDirectiveProps) => {
   return (
-    <div name={props.name} data-configured={props.configured}>
+    <div
+      data-value={props.value}
+      data-value-type={typeof props.value}
+      data-configured={props.configured}
+      data-directive-type={props.directiveType}
+    >
       {props.children}
     </div>
   );
 };
 
-const customConfigurator: ComponentConfigurator = async (directive) => {
-  await Promise.all([]);
-  directive.attributes ??= {};
-  directive.attributes.name = "1";
-  directive.attributes.configured = "true";
+const customConfigurator1: ComponentConfigurator<CustomDirectiveProps> = (
+  directive,
+) => {
+  return {
+    value: 1,
+    configured: true,
+    directiveType: directive.type,
+  };
+};
+
+const customConfigurator2: ComponentConfigurator<CustomDirectiveProps> = (
+  directive,
+) => {
+  return {
+    ...directive.attributes,
+    children: [{ type: "text", value: "new child" }],
+  } as CustomDirectiveProps;
 };
 
 const directives: DirectiveOptions = {
@@ -30,7 +52,11 @@ const directives: DirectiveOptions = {
   },
   customWithConfigurator: {
     component: CustomDirective,
-    configure: customConfigurator,
+    configure: customConfigurator1,
+  },
+  customWithChildren: {
+    component: CustomDirective,
+    configure: customConfigurator2,
   },
 };
 
@@ -57,24 +83,24 @@ async function heading() {
 
 async function inlineDirective() {
   await assertParseResult(
-    ":custom[content]{name=0}",
+    ":custom[content]{value=0}",
     <p>
-      <div name="0">content</div>
+      <div data-value={0} data-value-type="string">content</div>
     </p>,
   );
 }
 
 async function blockDirective() {
   await assertParseResult(
-    "::custom[content]{name=0}",
-    <div name="0">content</div>,
+    "::custom[content]{value=0}",
+    <div data-value={0} data-value-type="string">content</div>,
   );
 }
 
 async function containerDirective() {
   await assertParseResult(
-    ":::custom{name=0}\n\ncontent1\n\ncontent2\n\n:::",
-    <div name="0">
+    ":::custom{value=0}\n\ncontent1\n\ncontent2\n\n:::",
+    <div data-value={0} data-value-type="string">
       <p>content1</p>
       <p>content2</p>
     </div>,
@@ -83,26 +109,74 @@ async function containerDirective() {
 
 async function inlineDirectiveWithConfigurator() {
   await assertParseResult(
-    ":customWithConfigurator[content]{name=0}",
+    ":customWithConfigurator[content]{value=0}",
     <p>
-      <div name="1" data-configured="true">content</div>
+      <div
+        data-value={1}
+        data-value-type="number"
+        data-configured={true}
+        data-directive-type="textDirective"
+      >
+        content
+      </div>
     </p>,
   );
 }
 
 async function blockDirectiveWithConfigurator() {
   await assertParseResult(
-    "::customWithConfigurator[content]{name=0}",
-    <div name="1" data-configured="true">content</div>,
+    "::customWithConfigurator[content]{value=0}",
+    <div
+      data-value={1}
+      data-value-type="number"
+      data-configured={true}
+      data-directive-type="leafDirective"
+    >
+      content
+    </div>,
   );
 }
 
 async function containerDirectiveWithConfigurator() {
   await assertParseResult(
-    ":::customWithConfigurator{name=0}\n\ncontent1\n\ncontent2\n\n:::",
-    <div name="1" data-configured="true">
+    ":::customWithConfigurator{value=0}\n\ncontent1\n\ncontent2\n\n:::",
+    <div
+      data-value={1}
+      data-value-type="number"
+      data-configured={true}
+      data-directive-type="containerDirective"
+    >
       <p>content1</p>
       <p>content2</p>
+    </div>,
+  );
+}
+
+async function inlineDirectiveWithConfiguredChildren() {
+  await assertParseResult(
+    ":customWithChildren[content]{value=0}",
+    <p>
+      <div data-value={0} data-value-type="string">
+        new child
+      </div>
+    </p>,
+  );
+}
+
+async function blockDirectiveWithConfiguredChildren() {
+  await assertParseResult(
+    "::customWithChildren[content]{value=0}",
+    <div data-value={0} data-value-type="string">
+      new child
+    </div>,
+  );
+}
+
+async function containerDirectiveWithConfiguredChildren() {
+  await assertParseResult(
+    ":::customWithChildren{value=0}\n\ncontent1\n\ncontent2\n\n:::",
+    <div data-value={0} data-value-type="string">
+      new child
     </div>,
   );
 }
@@ -115,3 +189,6 @@ Deno.test(containerDirective);
 Deno.test(inlineDirectiveWithConfigurator);
 Deno.test(blockDirectiveWithConfigurator);
 Deno.test(containerDirectiveWithConfigurator);
+Deno.test(inlineDirectiveWithConfiguredChildren);
+Deno.test(blockDirectiveWithConfiguredChildren);
+Deno.test(containerDirectiveWithConfiguredChildren);

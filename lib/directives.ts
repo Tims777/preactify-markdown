@@ -30,12 +30,19 @@ export async function configureAll<T extends Mdast>(
   }
 }
 
+function defaultConfigurator(directive: Directive) {
+  return directive.attributes;
+}
+
 export async function configure(
   directive: Directive,
   handler?: DirectiveHandler,
 ) {
-  if (handler?.configure) await handler.configure(directive);
+  const configure = handler?.configure ?? defaultConfigurator;
+  const result = await configure(directive);
+  if (!result) return; // TODO: remove node if result === false
   directive.data ??= {};
   directive.data.hName = directive.name;
-  directive.data.hProperties = directive.attributes;
+  directive.data.hProperties = result;
+  if ("children" in result) directive.data.hChildren = result.children;
 }
