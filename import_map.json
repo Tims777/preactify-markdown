@@ -1,5 +1,5 @@
 {
   "imports": {
-    "preact/jsx-runtime": "https://esm.sh/preact@10.13.2/jsx-runtime"
+    "preact": "https://esm.sh/preact@10.13.2"
   }
 }

@@ -1,5 +1,5 @@
 import { configureAll, parseMarkdown, preactify } from "./deps.ts";
-import { type DirectiveOptions, type JSX, type Mdast } from "./types.d.ts";
+import { type DirectiveOptions, type Mdast, type VNode } from "./types.d.ts";
 
 export default class MarkdownPreactifier {
   constructor(private directives: DirectiveOptions) {}
@@ -12,7 +12,7 @@ export default class MarkdownPreactifier {
     await configureAll(mdast, this.directives);
   }
 
-  public preactify(mdast: Mdast): JSX.Element | null {
+  public preactify(mdast: Mdast): VNode | null {
     return preactify(mdast, this.directives);
   }
 }

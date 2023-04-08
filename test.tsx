@@ -4,7 +4,7 @@ import {
   type ComponentChildren,
   type ComponentConfigurator,
   type DirectiveOptions,
-  type JSX,
+  type VNode,
 } from "./types.d.ts";
 
 interface CustomDirectiveProps {
@@ -42,7 +42,7 @@ const customConfigurator2: ComponentConfigurator<CustomDirectiveProps> = (
 ) => {
   return {
     ...directive.attributes,
-    children: [{ type: "text", value: "new child" }],
+    children: [<h1>new child</h1>],
   } as CustomDirectiveProps;
 };
 
@@ -60,7 +60,7 @@ const directives: DirectiveOptions = {
   },
 };
 
-async function assertParseResult(markdown: string, html: JSX.Element) {
+async function assertParseResult(markdown: string, html: VNode) {
   const preactifier = new MarkdownPreactifier(directives);
   const hast = preactifier.parse(markdown);
   await preactifier.configure(hast);
@@ -157,7 +157,7 @@ async function inlineDirectiveWithConfiguredChildren() {
     ":customWithChildren[content]{value=0}",
     <p>
       <div data-value={0} data-value-type="string">
-        new child
+        <h1>new child</h1>
       </div>
     </p>,
   );
@@ -167,7 +167,7 @@ async function blockDirectiveWithConfiguredChildren() {
   await assertParseResult(
     "::customWithChildren[content]{value=0}",
     <div data-value={0} data-value-type="string">
-      new child
+      <h1>new child</h1>
     </div>,
   );
 }
@@ -176,7 +176,7 @@ async function containerDirectiveWithConfiguredChildren() {
   await assertParseResult(
     ":::customWithChildren{value=0}\n\ncontent1\n\ncontent2\n\n:::",
     <div data-value={0} data-value-type="string">
-      new child
+      <h1>new child</h1>
     </div>,
   );
 }

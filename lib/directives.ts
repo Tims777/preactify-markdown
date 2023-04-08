@@ -1,9 +1,11 @@
 import { unistVisit } from "../deps.ts";
 import {
+  type ConfiguredDirective,
   type Directive,
   type DirectiveHandler,
   type DirectiveOptions,
   type Mdast,
+  type SkippedDirective,
 } from "../types.d.ts";
 
 enum DirectiveType {
@@ -12,7 +14,7 @@ enum DirectiveType {
   "containerDirective",
 }
 
-export function isDirective(node: { type: string }): node is Directive {
+function isUnprocessedDirective(node: { type: string }): node is Directive {
   return node.type in DirectiveType;
 }
 
@@ -21,7 +23,7 @@ export async function configureAll<T extends Mdast>(
   handlers: DirectiveOptions,
 ) {
   const directives: Directive[] = [];
-  unistVisit(tree, isDirective, (node) => {
+  unistVisit(tree, isUnprocessedDirective, (node) => {
     directives.push(node);
   });
 
@@ -38,11 +40,22 @@ export async function configure(
   directive: Directive,
   handler?: DirectiveHandler,
 ) {
-  const configure = handler?.configure ?? defaultConfigurator;
-  const result = await configure(directive);
-  if (!result) return; // TODO: remove node if result === false
-  directive.data ??= {};
-  directive.data.hName = directive.name;
-  directive.data.hProperties = result;
-  if ("children" in result) directive.data.hChildren = result.children;
+  const result = handler
+    ? await (handler.configure ?? defaultConfigurator)(directive)
+    : false;
+  if (result === false) {
+    overwrite(directive, { type: "skippedDirective" });
+  } else {
+    overwrite(directive, {
+      type: "configuredDirective",
+      properties: result,
+    });
+  }
+}
+
+function overwrite(
+  oldNode: Directive,
+  newNode: Partial<ConfiguredDirective | SkippedDirective>,
+) {
+  Object.assign(oldNode, newNode);
 }
