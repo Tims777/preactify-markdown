@@ -1,10 +1,10 @@
 import MarkdownPreactifier from "./mod.ts";
 import { assertEquals, renderToString } from "./test-deps.ts";
-import {
-  type ComponentChildren,
-  type ComponentConfigurator,
-  type DirectiveOptions,
-  type VNode,
+import type {
+  ComponentChildren,
+  ComponentConfigurator,
+  DirectiveOptions,
+  VNode,
 } from "./types.d.ts";
 
 interface CustomDirectiveProps {

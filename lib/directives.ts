@@ -1,11 +1,11 @@
 import { unistVisit } from "../deps.ts";
-import {
-  type ConfiguredDirective,
-  type Directive,
-  type DirectiveHandler,
-  type DirectiveOptions,
-  type Mdast,
-  type SkippedDirective,
+import type {
+  ConfiguredDirective,
+  Directive,
+  DirectiveHandler,
+  DirectiveOptions,
+  Mdast,
+  SkippedDirective,
 } from "../types.d.ts";
 
 enum DirectiveType {
@@ -40,7 +40,7 @@ function defaultConfigurator(directive: Directive) {
 export async function configure<TContext>(
   directive: Directive,
   handler?: DirectiveHandler,
-  context?: TContext
+  context?: TContext,
 ) {
   const result = handler
     ? await (handler.configure ?? defaultConfigurator)(directive, context)

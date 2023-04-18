@@ -8,3 +8,4 @@ export { visit as unistVisit } from "https://esm.sh/unist-util-visit@4.1.2";
 export { configureAll } from "./lib/directives.ts";
 export { parseMarkdown } from "./lib/markdown.ts";
 export { preactify } from "./lib/preactify.ts";
+export { createElement, Fragment } from "preact";

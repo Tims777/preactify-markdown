@@ -1,12 +1,11 @@
-import { createElement, Fragment } from "preact";
-import { toHast } from "../deps.ts";
-import {
-  type ConfiguredDirective,
-  type DirectiveOptions,
-  type HastNode,
-  type Mdast,
-  type SkippedDirective,
-  type VNode,
+import { createElement, Fragment, toHast } from "../deps.ts";
+import type {
+  ConfiguredDirective,
+  DirectiveOptions,
+  HastNode,
+  Mdast,
+  SkippedDirective,
+  VNode,
 } from "../types.d.ts";
 
 export function preactify(
@@ -27,7 +26,8 @@ function preactifyHastNode(
 ): VNode | null {
   if (node.type == "configuredDirective") {
     return createElement(
-      directives[node.name].component,
+      // deno-lint-ignore no-explicit-any
+      directives[node.name].component as any,
       node.properties,
       node.properties.children ?? preactifyChildren(node, directives),
     );
